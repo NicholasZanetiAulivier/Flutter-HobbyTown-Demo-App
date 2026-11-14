@@ -13,8 +13,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: .fromSeed(seedColor: Color(0xFFF8F7FA)),
         textTheme: TextTheme(
+          headlineLarge: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.w900,
+            fontSize: 18,
+          ),
           labelSmall: TextStyle(
             fontFamily: "PlusJakartaSans",
             fontWeight: FontWeight.w700,
