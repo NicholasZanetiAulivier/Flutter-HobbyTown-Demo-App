@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/components/floating_app_bar.dart';
 import 'package:hobby_town_demo/components/top_app_bar.dart';
+import 'package:hobby_town_demo/providers/auth_provider.dart';
 import 'package:hobby_town_demo/screens/cart_screen.dart';
 import 'package:hobby_town_demo/screens/catalog_screen.dart';
 import 'package:hobby_town_demo/screens/general_screen.dart';
 import 'package:hobby_town_demo/screens/profile_screen.dart';
 import 'package:hobby_town_demo/screens/wishlist_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   final List<Widget> pages = const <Widget>[
@@ -19,10 +21,11 @@ class HomeScreen extends StatefulWidget {
   ];
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  late bool isAuth;
   int currentIndex = 0;
   String titleText = "Beranda";
   late Widget currentPage;
@@ -43,8 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       case 2:
         {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => CartScreen()));
+          if (!isAuth) {
+            showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(content: Text("You must be logged in to view")),
+            );
+          } else {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CartScreen()));
+          }
           break;
         }
       case 3:
@@ -70,10 +81,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     setState(() {
+      isAuth = ref.watch(isAuthProvider);
       currentPage = widget.pages[0];
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TopAppBarContent(

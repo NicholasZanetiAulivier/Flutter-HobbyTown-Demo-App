@@ -55,7 +55,7 @@ class _FloatingAppBarState extends State<FloatingAppBar> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              currentIndex = index;
+              currentIndex = index == 2 ? currentIndex : index;
               widget.setIndexCallback(index);
             });
           },
