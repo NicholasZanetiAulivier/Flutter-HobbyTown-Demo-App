@@ -15,6 +15,7 @@ class _GeneralScreenState extends State<GeneralScreen> {
   @override
   void activate() {
     super.activate();
+    FocusManager.instance.primaryFocus?.unfocus();
     controller.jumpTo(0);
   }
 

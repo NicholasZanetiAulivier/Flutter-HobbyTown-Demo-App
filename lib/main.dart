@@ -43,9 +43,20 @@ class MyApp extends StatelessWidget {
             fontSize: 10,
             color: MAROON_PINK,
           ),
+          labelLarge: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.w700,
+            fontSize: 11,
+            color: MAROON_PINK,
+          ),
           headlineSmall: TextStyle(
             fontFamily: "PlusJakartaSans",
             fontWeight: FontWeight.w900,
+            fontSize: 14,
+          ),
+          titleMedium: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.normal,
             fontSize: 14,
           ),
           displaySmall: TextStyle(

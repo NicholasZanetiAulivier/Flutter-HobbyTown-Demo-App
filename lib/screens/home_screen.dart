@@ -108,9 +108,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         body: BottomBar(
           controller: controller,
           scrollBehavior: BottomBarScrollBehavior(
-            predicate: (notification) => notification.depth == 0,
             showAtStart: true,
             showOnScrollEnd: true,
+            hideOnScroll: true,
           ),
           body: currentPage,
           child: FloatingAppBar(setIndexCallback: onNavPick),
