@@ -13,13 +13,6 @@ import 'package:hobby_town_demo/screens/wishlist_screen.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
-  final List<Widget> pages = const <Widget>[
-    GeneralScreen(),
-    CatalogScreen(),
-    WishlistScreen(),
-    ProfileScreen(),
-  ];
-
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
@@ -29,18 +22,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   int currentIndex = 0;
   String titleText = "Beranda";
   late Widget currentPage;
+  final BottomBarController controller = BottomBarController();
+
+  final List<Widget> pages = <Widget>[
+    GeneralScreen(),
+    CatalogScreen(),
+    WishlistScreen(),
+    ProfileScreen(),
+  ];
 
   void onNavPick(int i) {
     switch (i) {
       case 0:
         {
-          currentPage = widget.pages[0];
+          currentPage = pages[0];
           titleText = "Beranda";
           break;
         }
       case 1:
         {
-          currentPage = widget.pages[1];
+          currentPage = pages[1];
           titleText = "Katalog";
           break;
         }
@@ -60,13 +61,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
       case 3:
         {
-          currentPage = widget.pages[2];
+          currentPage = pages[2];
           titleText = "Wishlist";
           break;
         }
       case 4:
         {
-          currentPage = widget.pages[3];
+          currentPage = pages[3];
           titleText = "Akun Saya";
           break;
         }
@@ -85,22 +86,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     setState(() {
       isAuth = ref.watch(isAuthProvider);
-      currentPage = widget.pages[0];
+      currentPage = pages[0];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: TopAppBarContent(
-          titleText: titleText,
-          shouldShowBackButton: false,
+    return Container(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          toolbarHeight: 40,
+          surfaceTintColor: Colors.white,
+          shadowColor: Colors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: TopAppBarContent(
+            titleText: titleText,
+            shouldShowBackButton: false,
+          ),
         ),
-      ),
-      body: BottomBar(
-        body: currentPage,
-        child: FloatingAppBar(setIndexCallback: onNavPick),
+        body: BottomBar(
+          controller: controller,
+          scrollBehavior: BottomBarScrollBehavior(
+            predicate: (notification) => notification.depth == 0,
+            showAtStart: true,
+            showOnScrollEnd: true,
+          ),
+          body: currentPage,
+          child: FloatingAppBar(setIndexCallback: onNavPick),
+        ),
       ),
     );
   }
