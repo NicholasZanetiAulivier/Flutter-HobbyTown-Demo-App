@@ -4,6 +4,7 @@ class Item {
   final String name;
   final int price;
   final String category;
+  final DateTime released;
 
   const new({
     required this.imageUrl,
@@ -11,5 +12,8 @@ class Item {
     required this.name,
     required this.price,
     required this.category,
+    required this.released,
   });
 }
+
+enum WishlistFilter { all, available, promo }
