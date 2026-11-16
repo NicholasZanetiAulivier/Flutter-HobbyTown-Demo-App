@@ -43,6 +43,12 @@ class MyApp extends StatelessWidget {
             fontSize: 10,
             color: MAROON_PINK,
           ),
+          headlineMedium: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.normal,
+            fontSize: 10,
+            color: TEXT_GREY,
+          ),
           labelLarge: TextStyle(
             fontFamily: "PlusJakartaSans",
             fontWeight: FontWeight.w700,
@@ -64,6 +70,16 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.normal,
             fontSize: 12,
             color: Color(0xFF6B6B76),
+          ),
+          titleSmall: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+          titleLarge: TextStyle(
+            fontFamily: "PlusJakartaSans",
+            fontWeight: FontWeight.w900,
+            fontSize: 14,
           ),
         ),
       ),

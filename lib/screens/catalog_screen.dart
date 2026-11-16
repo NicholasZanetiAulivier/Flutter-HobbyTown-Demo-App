@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hobby_town_demo/components/catalog_item.dart';
+import 'package:hobby_town_demo/models/item.dart';
+import 'package:hobby_town_demo/providers/catalog_provider.dart';
 
-class CatalogScreen extends StatefulWidget {
+class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
 
   @override
-  State<CatalogScreen> createState() => _CatalogScreenState();
+  ConsumerState<CatalogScreen> createState() => _CatalogScreenState();
 }
 
-class _CatalogScreenState extends State<CatalogScreen> {
+class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController textController = TextEditingController();
   bool focus = false;
@@ -20,12 +24,23 @@ class _CatalogScreenState extends State<CatalogScreen> {
     "History 4",
   ];
 
+  List<Item> items = [];
+
   @override
   void activate() {
     super.activate();
     scrollController.jumpTo(0);
     textController.text = "";
     FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      items = ref.watch(itemsProvider);
+    });
   }
 
   @override
@@ -154,11 +169,28 @@ class _CatalogScreenState extends State<CatalogScreen> {
                             padding: EdgeInsets.only(top: 12, bottom: 24),
                           )
                         : SizedBox.shrink(),
-                    SizedBox(height: 40, child: Placeholder()),
-                    SizedBox(height: 40),
-                    SizedBox(height: 40),
-                    SizedBox(height: 40),
-                    SizedBox(height: 1000),
+                    Align(
+                      alignment: AlignmentGeometry.centerLeft,
+                      child: Text(
+                        "Mungkin Kamu Suka",
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
+                    GridView.count(
+                      padding: EdgeInsets.only(top: 24),
+                      physics: ScrollPhysics(),
+                      crossAxisCount: 2,
+                      children: items.map((i) => CatalogItem(item: i)).toList(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      childAspectRatio: 145 / 250,
+                    ),
+                    SizedBox(height: 50),
+                    Text(
+                      "-- batas --",
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                    SizedBox(height: 100),
                   ],
                 ),
               ),
