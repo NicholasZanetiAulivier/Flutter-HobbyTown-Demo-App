@@ -45,3 +45,9 @@ final itemsProvider = Provider<List<Item>>((ref) => ref.watch(itemsState));
 final wishState = StateProvider<List<Item>>((ref) => []);
 
 final wishProvider = Provider<List<Item>>((ref) => ref.watch(wishState));
+
+final historyState = StateProvider<List<String>>((_) => []);
+
+final historyProvider = Provider<List<String>>(
+  (ref) => ref.watch(historyState),
+);
