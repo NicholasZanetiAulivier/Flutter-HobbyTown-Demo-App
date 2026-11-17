@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/models/item.dart';
 import 'package:hobby_town_demo/providers/catalog_provider.dart';
+import 'package:hobby_town_demo/screens/product_details_screen.dart';
 import 'package:hobby_town_demo/utils/utils.dart';
 
 enum CatalogSort { popular, newest, cheapest }
@@ -90,7 +91,6 @@ class CatalogScreen extends ConsumerStatefulWidget {
     this.tryTheseSearches = const [],
     this.recommendedItems,
     this.brandLogo,
-    this.onItemTap,
     this.onFavoriteChanged,
     this.onAddToCart,
     this.onFilterChanged,
@@ -109,7 +109,6 @@ class CatalogScreen extends ConsumerStatefulWidget {
 
   final ImageProvider? brandLogo;
 
-  final ValueChanged<Item>? onItemTap;
   final void Function(Item item, bool isFavorite)? onFavoriteChanged;
   final ValueChanged<Item>? onAddToCart;
   final ValueChanged<CatalogFilter>? onFilterChanged;
@@ -133,9 +132,16 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
     super.initState();
     _controller.addListener(_rebuild);
     _focus.addListener(_rebuild);
-    items = ref.watch(itemsProvider);
-    history = ref.watch(historyProvider);
-    wishList = ref.watch(wishProvider).map((e) => e.id).toSet();
+    items = ref.watch(itemsSelector);
+    history = ref.watch(historySelector);
+    wishList = ref.watch(wishSelector).map((e) => e.id).toSet();
+  }
+
+  void onItemTap(Item item) {
+    if (!mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ProductDetailScreen(item: item)),
+    );
   }
 
   @override
@@ -329,7 +335,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
       items: items,
       favorites: wishList,
       bottomPadding: bottomPadding,
-      onTap: (item) => widget.onItemTap?.call(item),
+      onTap: (item) => onItemTap(item),
       onToggleFavorite: _toggleFavorite,
       onAddToCart: (item) => widget.onAddToCart?.call(item),
     );

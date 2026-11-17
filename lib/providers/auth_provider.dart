@@ -1,12 +1,13 @@
+import 'package:hobby_town_demo/services/globals_service.dart';
 import 'package:riverpod/legacy.dart';
 import 'package:riverpod/riverpod.dart';
 
-final isAuthState = StateProvider<bool>((_) => false);
+final isAuthProvider = StateProvider<bool>((_) => GlobalsService.isAuth);
 
-final isAuthProvider = Provider<bool>((ref) {
-  return ref.watch(isAuthState);
+final isAuthSelector = Provider<bool>((ref) {
+  return ref.watch(isAuthProvider);
 });
 
-final usernameState = StateProvider<String>((_) => "unknown");
+final usernameProvider = StateProvider<String>((_) => GlobalsService.username);
 
-final usernameProvider = Provider<String>((ref) => ref.watch(usernameState));
+final usernameSelector = Provider<String>((ref) => ref.watch(usernameProvider));

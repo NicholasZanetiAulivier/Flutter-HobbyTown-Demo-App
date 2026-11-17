@@ -39,7 +39,7 @@ class _WishlistPageState extends ConsumerState<WishlistScreen> {
   @override
   void initState() {
     super.initState();
-    items = ref.watch(wishProvider);
+    items = ref.watch(wishSelector);
   }
 
   @override

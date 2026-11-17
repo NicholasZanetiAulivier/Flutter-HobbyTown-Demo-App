@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
-import 'package:hobby_town_demo/screens/home_screen.dart';
+import 'package:hobby_town_demo/providers/auth_provider.dart';
+import 'package:hobby_town_demo/screens/splash_screen.dart';
+import 'package:hobby_town_demo/services/globals_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferencesAsync sharedPreferences = SharedPreferencesAsync();
+  GlobalsService.isAuth = await sharedPreferences.getBool("isAuth") ?? false;
+  GlobalsService.username = await sharedPreferences.getString("username") ?? "";
+
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(isAuthProvider.notifier).state = GlobalsService.isAuth;
+    ref.read(usernameProvider.notifier).state = GlobalsService.username;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -83,7 +93,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

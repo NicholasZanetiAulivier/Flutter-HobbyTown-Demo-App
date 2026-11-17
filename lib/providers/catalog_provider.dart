@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 
 import '../models/item.dart';
 
-final itemsState = StateProvider<List<Item>>(
+final itemsProvider = StateProvider<List<Item>>(
   (_) => [
     Item(
       imageUrl: "https://store-assets.jubelio.com/webstore-v2/images/jstorev2/t1578dbnhqmov/1775878199359_a9465fd0-c757-47d6-9350-94a122409cef.jpeg",
@@ -12,6 +12,7 @@ final itemsState = StateProvider<List<Item>>(
       id: "1",
       price: 43750,
       released: DateTime.now(),
+      anime: "SomeAnime",
     ),
     Item(
       imageUrl: "https://store-assets.jubelio.com/webstore-v2/images/jstorev2/t1578dbnhqmov/1775878199359_a9465fd0-c757-47d6-9350-94a122409cef.jpeg",
@@ -20,6 +21,7 @@ final itemsState = StateProvider<List<Item>>(
       id: "1",
       price: 43750,
       released: DateTime.now(),
+      anime: "SomeAnime",
     ),
     Item(
       imageUrl: "https://store-assets.jubelio.com/webstore-v2/images/jstorev2/t1578dbnhqmov/1775878199359_a9465fd0-c757-47d6-9350-94a122409cef.jpeg",
@@ -28,6 +30,7 @@ final itemsState = StateProvider<List<Item>>(
       id: "1",
       price: 43750,
       released: DateTime.now(),
+      anime: "SomeAnime",
     ),
     Item(
       imageUrl: "https://store-assets.jubelio.com/webstore-v2/images/jstorev2/t1578dbnhqmov/1775878199359_a9465fd0-c757-47d6-9350-94a122409cef.jpeg",
@@ -36,18 +39,25 @@ final itemsState = StateProvider<List<Item>>(
       id: "1",
       price: 43750,
       released: DateTime.now(),
+      anime: "SomeAnime",
     ),
   ],
 );
 
-final itemsProvider = Provider<List<Item>>((ref) => ref.watch(itemsState));
+final itemsSelector = Provider<List<Item>>((ref) => ref.watch(itemsProvider));
 
-final wishState = StateProvider<List<Item>>((ref) => []);
+final wishProvider = StateProvider<List<Item>>((ref) => []);
 
-final wishProvider = Provider<List<Item>>((ref) => ref.watch(wishState));
+final wishSelector = Provider<List<Item>>((ref) => ref.watch(wishProvider));
 
-final historyState = StateProvider<List<String>>((_) => []);
+final historyProvider = StateProvider<List<String>>((_) => []);
 
-final historyProvider = Provider<List<String>>(
-  (ref) => ref.watch(historyState),
+final historySelector = Provider<List<String>>(
+  (ref) => ref.watch(historyProvider),
+);
+
+final cartProvider = StateProvider<List<CartEntry>>((ref) => []);
+
+final cartSelector = Provider<List<CartEntry>>(
+  (ref) => ref.watch(cartProvider),
 );

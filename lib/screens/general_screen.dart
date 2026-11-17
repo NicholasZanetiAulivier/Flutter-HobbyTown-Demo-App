@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_town_demo/components/large_news.dart';
 import 'package:hobby_town_demo/components/small_news.dart';
+import 'package:hobby_town_demo/screens/news_screen.dart';
+import 'package:hobby_town_demo/services/globals_service.dart';
 
 class GeneralScreen extends StatefulWidget {
   const GeneralScreen({super.key});
@@ -34,9 +36,12 @@ class _GeneralScreenState extends State<GeneralScreen> {
               dateReleased: DateTime(2026, 10, 26),
               readMinutes: 6,
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (context) => Placeholder()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        NewsScreen(article: GlobalsService.articles[0]),
+                  ),
+                );
               },
             ),
             SizedBox(height: 24),

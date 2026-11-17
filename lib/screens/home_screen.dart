@@ -18,7 +18,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late bool isAuth;
   int currentIndex = 0;
   String titleText = "Beranda";
   late Widget currentPage;
@@ -47,7 +46,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
       case 2:
         {
-          if (!isAuth) {
+          if (!ref.watch(isAuthSelector)) {
             showDialog(
               context: context,
               builder: (context) =>
@@ -85,7 +84,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     setState(() {
-      isAuth = ref.watch(isAuthProvider);
       currentPage = pages[0];
     });
   }

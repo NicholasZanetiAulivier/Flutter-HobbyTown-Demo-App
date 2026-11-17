@@ -16,12 +16,25 @@ dependencies:
   flutter_riverpod: ^3.5.0
   intl: ^0.20.3
   geolocator: ^14.1.2
+  shared_preferences: ^2.5.6
+  flutter_html:
+    git:
+      url: https://github.com/suhail-121/flutter_html.git
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  color: "#0E0E12"
+  image: resources/images/logo.png
+  android_12:
+    color: "#0E0E12"
+    image: resources/images/logo.png
 
 flutter:
 
@@ -33,3 +46,10 @@ flutter:
         - asset: resources/fonts/jakarta/PlusJakartaSans-VariableFont_wght.ttf
         - asset: resources/fonts/jakarta/PlusJakartaSans-Italic-VariableFont_wght.ttf
           style: italic
+  assets:
+    - resources/images/logo.png
+    - resources/images/onboarding_1.png
+    - resources/images/onboarding_2_jacket.png
+    - resources/images/onboarding_2_keychain.png
+    - resources/images/onboarding_2_plush.png
+    - resources/images/onboarding_3_jacket.png
