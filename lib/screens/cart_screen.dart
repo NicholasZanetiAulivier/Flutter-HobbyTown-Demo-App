@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/components/top_app_bar.dart';
 import 'package:hobby_town_demo/models/item.dart';
 import 'package:hobby_town_demo/providers/catalog_provider.dart';
+import 'package:hobby_town_demo/screens/checkout_screen.dart';
 
 class CartScreenImpl extends ConsumerStatefulWidget {
   const CartScreenImpl({super.key});
@@ -36,7 +37,16 @@ class CartScreenStateImpl extends ConsumerState<CartScreenImpl> {
 
   void onApplyVoucher(String s) {}
 
-  void onCheckout(List<CartEntry> carts) {}
+  void onCheckout(List<CartEntry> carts) {
+    if (!mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CheckoutScreenImpl(
+          items: carts.where((element) => element.selected).toList(),
+        ),
+      ),
+    );
+  }
 
   final TextEditingController _voucherController = TextEditingController();
 

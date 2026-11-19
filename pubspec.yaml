@@ -21,6 +21,8 @@ dependencies:
     git:
       url: https://github.com/suhail-121/flutter_html.git
   url_launcher: ^6.3.3
+  sqflite: ^2.4.6
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

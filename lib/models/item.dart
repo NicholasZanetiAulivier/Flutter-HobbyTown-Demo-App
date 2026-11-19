@@ -24,10 +24,10 @@ class CartEntry {
   final Item item;
   final String size;
   final String variant;
-  final int quantity;
+  int quantity;
   final bool selected;
 
-  const CartEntry({
+  CartEntry({
     required this.item,
     required this.size,
     required this.variant,
@@ -36,4 +36,20 @@ class CartEntry {
   });
 
   int get lineTotal => item.price * quantity;
+}
+
+class Order {
+  final List<CartEntry> itemList;
+  final int total;
+  final String orderNo;
+  final String paymentMethod;
+  final DateTime paidAt;
+
+  new({
+    required this.itemList,
+    required this.total,
+    required this.orderNo,
+    required this.paidAt,
+    required this.paymentMethod,
+  });
 }
