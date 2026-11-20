@@ -8,9 +8,9 @@ final itemsProvider = StateProvider<List<Item>>((_) => GlobalsService.items);
 
 final itemsSelector = Provider<List<Item>>((ref) => ref.watch(itemsProvider));
 
-final wishProvider = StateProvider<List<Item>>((ref) => []);
+final wishProvider = StateProvider<Set<Item>>((ref) => {});
 
-final wishSelector = Provider<List<Item>>((ref) => ref.watch(wishProvider));
+final wishSelector = Provider<Set<Item>>((ref) => ref.watch(wishProvider));
 
 final historyProvider = StateProvider<List<String>>((_) => []);
 

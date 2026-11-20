@@ -91,8 +91,6 @@ class CatalogScreen extends ConsumerStatefulWidget {
     this.tryTheseSearches = const [],
     this.recommendedItems,
     this.brandLogo,
-    this.onFavoriteChanged,
-    this.onAddToCart,
     this.onFilterChanged,
     this.onHistoryChanged,
   });
@@ -109,8 +107,6 @@ class CatalogScreen extends ConsumerStatefulWidget {
 
   final ImageProvider? brandLogo;
 
-  final void Function(Item item, bool isFavorite)? onFavoriteChanged;
-  final ValueChanged<Item>? onAddToCart;
   final ValueChanged<CatalogFilter>? onFilterChanged;
   final ValueChanged<List<String>>? onHistoryChanged;
 
@@ -126,6 +122,26 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
   late List<String> history;
   late Set<String> wishList;
   CatalogFilter _filter = const CatalogFilter();
+
+  void onFavoriteChange(Item item, bool isFavorite) {
+    if (isFavorite) {
+      ref.read(wishProvider.notifier).state.add(item);
+    } else {
+      ref
+          .read(wishProvider.notifier)
+          .state
+          .removeWhere((element) => element == item);
+    }
+  }
+
+  void onAddToCart(Item item) {
+    List<CartEntry> cart = ref.read(cartProvider.notifier).state;
+    if (cart.where((element) => element.item == item).length <= 0) {
+      cart.add(CartEntry(item: item, size: 'S', variant: "Ukuran"));
+    } else {
+      cart.where((element) => element.item == item).first.quantity += 1;
+    }
+  }
 
   @override
   void initState() {
@@ -258,7 +274,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
         wishList.remove(item.id);
       }
     });
-    widget.onFavoriteChanged?.call(item, nowFavorite);
+    onFavoriteChange(item, nowFavorite);
   }
 
   Future<void> _openFilter() async {
@@ -337,7 +353,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
       bottomPadding: bottomPadding,
       onTap: (item) => onItemTap(item),
       onToggleFavorite: _toggleFavorite,
-      onAddToCart: (item) => widget.onAddToCart?.call(item),
+      onAddToCart: (item) => onAddToCart.call(item),
     );
   }
 

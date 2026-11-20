@@ -40,7 +40,7 @@ class CheckoutScreenImpl extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
-  late ShippingAddress _address;
+  late ShippingAddress? _address;
   late ShippingOption _shipping;
   late List<ShippingAddress> _addresses;
   late List<ShippingOption> shippingOptions;
@@ -66,7 +66,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
       ShippingOption(id: "3", name: "Grab", eta: "10 menit", price: 40000),
     ];
 
-    _address = _addresses.first;
+    _address = _addresses.firstOrNull;
     _shipping = shippingOptions.first;
   }
 
@@ -74,7 +74,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
     final result = await showAddressSelectionSheet(
       context,
       addresses: _addresses,
-      selectedId: _address.id.toString(),
+      selectedId: _address!.id.toString(),
       onAddressAdded: (a) => setState(() => _addresses = [..._addresses, a]),
     );
     if (result != null && mounted) setState(() => _address = result);
@@ -151,7 +151,7 @@ TextStyle get _titleStyle =>
     const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: _C.ink);
 
 class _AddressCard extends StatelessWidget {
-  final ShippingAddress address;
+  final ShippingAddress? address;
   final VoidCallback onChange;
 
   const _AddressCard({required this.address, required this.onChange});
@@ -204,7 +204,7 @@ class _AddressCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            "${address.firstName} ${address.lastName}",
+                            "Belum ada alamat",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 15,
@@ -219,7 +219,7 @@ class _AddressCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      address.phoneNo,
+                      "",
                       style: const TextStyle(
                         fontSize: 13,
                         color: _C.muted,
@@ -227,7 +227,7 @@ class _AddressCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      address.address,
+                      "",
                       style: const TextStyle(
                         fontSize: 13,
                         color: _C.muted,

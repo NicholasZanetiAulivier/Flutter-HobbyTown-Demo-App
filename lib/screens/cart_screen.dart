@@ -40,11 +40,7 @@ class CartScreenStateImpl extends ConsumerState<CartScreenImpl> {
   void onCheckout(List<CartEntry> carts) {
     if (!mounted) return;
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CheckoutScreenImpl(
-          items: carts.where((element) => element.selected).toList(),
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => CheckoutScreenImpl(items: carts)),
     );
   }
 
@@ -161,7 +157,7 @@ class CartScreenStateImpl extends ConsumerState<CartScreenImpl> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Pilih semua (${_selectedEntries.length})',
+                  'Beli semua (${_selectedEntries.length})',
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
