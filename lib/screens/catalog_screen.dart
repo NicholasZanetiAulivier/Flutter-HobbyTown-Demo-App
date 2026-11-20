@@ -314,7 +314,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 64, 20, 0),
             child: _SearchField(
               controller: _controller,
               focusNode: _focus,

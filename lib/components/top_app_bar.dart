@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hobby_town_demo/components/more_menu_button.dart';
+import 'package:hobby_town_demo/providers/auth_provider.dart';
+import 'package:hobby_town_demo/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TopAppBarContent extends StatelessWidget {
+class TopAppBarContent extends ConsumerWidget {
   const TopAppBarContent({
     super.key,
     required this.titleText,
@@ -10,8 +15,28 @@ class TopAppBarContent extends StatelessWidget {
   final String titleText;
   final bool shouldShowBackButton;
 
+  void onLogin(BuildContext context, WidgetRef ref) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
+  }
+
+  Future<void> onLogout(BuildContext context, WidgetRef ref) async {
+    SharedPreferencesAsync sharedPreferences = SharedPreferencesAsync();
+    await sharedPreferences.remove("isAuth");
+    await sharedPreferences.remove("username");
+    ref.read(isAuthProvider.notifier).state = false;
+    ref.read(usernameProvider.notifier).state = "";
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+      (route) => false,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isLoggedIn = ref.watch(isAuthSelector);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -32,13 +57,10 @@ class TopAppBarContent extends StatelessWidget {
           ),
         ),
         Text(titleText, style: Theme.of(context).textTheme.headlineLarge),
-        CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.white,
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.more_horiz, size: 20),
-          ),
+        MoreMenuButton(
+          isLoggedIn: isLoggedIn,
+          onLogin: () => onLogin(context, ref),
+          onLogout: () => onLogout(context, ref),
         ),
       ],
     );

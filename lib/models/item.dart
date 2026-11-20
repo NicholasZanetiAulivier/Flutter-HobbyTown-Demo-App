@@ -2,12 +2,12 @@ import 'package:hobby_town_demo/models/address.dart';
 
 class Item {
   final String imageUrl;
+  final List<String> moreImages;
   final String id;
   final String name;
   final int price;
   final String category;
   final DateTime released;
-  final String anime;
 
   const new({
     required this.imageUrl,
@@ -16,8 +16,24 @@ class Item {
     required this.price,
     required this.category,
     required this.released,
-    required this.anime,
+    required this.moreImages,
   });
+
+  factory fromJson(Map<String, Object?> jsonPart) {
+    return Item(
+      id: jsonPart["id"] as String,
+      imageUrl:
+          (jsonPart["product_assets"] as List)[0]["assets_url"] as String? ??
+          "",
+      moreImages: (jsonPart["product_assets"] as List)
+          .map<String>((e) => e["assets_url"])
+          .toList(),
+      released: DateTime.parse(jsonPart["created_at"] as String),
+      price: jsonPart["sell_price"] as int,
+      name: jsonPart["product_name"] as String,
+      category: jsonPart["category_name"] as String,
+    );
+  }
 }
 
 enum WishlistFilter { all, available, promo }

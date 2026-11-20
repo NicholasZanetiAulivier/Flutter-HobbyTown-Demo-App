@@ -1,4 +1,5 @@
 import 'package:hobby_town_demo/models/address.dart';
+import 'package:hobby_town_demo/models/item.dart';
 import 'package:hobby_town_demo/models/news.dart';
 
 class GlobalsService {
@@ -19,4 +20,5 @@ class GlobalsService {
   ];
 
   static List<ShippingAddress> addresses = [];
+  static List<Item> items = [];
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/providers/auth_provider.dart';
 import 'package:hobby_town_demo/screens/splash_screen.dart';
+import 'package:hobby_town_demo/services/api_service.dart';
 import 'package:hobby_town_demo/services/db_service.dart';
 import 'package:hobby_town_demo/services/globals_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ void main() async {
   GlobalsService.isAuth = await sharedPreferences.getBool("isAuth") ?? false;
   GlobalsService.username = await sharedPreferences.getString("username") ?? "";
   GlobalsService.addresses = await DbService.getAddresses() ?? [];
+  GlobalsService.items = await ApiService.getItemsAll();
 
   runApp(ProviderScope(child: MyApp()));
 }

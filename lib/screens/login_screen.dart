@@ -107,8 +107,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with _AuthRunner {
 
   void _google() {
     FocusScope.of(context).unfocus();
-    // Stub: behaves exactly like the "Masuk" button's success path.
-    runAuth(onAuthenticated);
+    if (_formKey.currentState!.validate()) {
+      runAuth(onAuthenticated);
+    }
   }
 
   void _forgotPassword() {
