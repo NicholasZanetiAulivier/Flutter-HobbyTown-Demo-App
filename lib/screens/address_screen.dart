@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hobby_town_demo/components/labeled_field.dart';
 import 'package:hobby_town_demo/components/pin_point_card.dart';
 import 'package:hobby_town_demo/components/section_dart.dart';
+import 'package:hobby_town_demo/components/top_app_bar.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 
 class AddressScreen extends StatefulWidget {
@@ -29,6 +30,14 @@ class _AddressScreenState extends State<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: null,
+        automaticallyImplyLeading: false,
+        title: TopAppBarContent(
+          titleText: "Alamat",
+          shouldShowBackButton: true,
+        ),
+      ),
       body: ColoredBox(
         color: BG,
         child: SingleChildScrollView(

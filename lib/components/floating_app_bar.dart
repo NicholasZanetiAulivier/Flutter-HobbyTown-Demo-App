@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 
 class FloatingAppBar extends StatefulWidget {
-  const FloatingAppBar({super.key, required this.setIndexCallback});
+  const FloatingAppBar({
+    super.key,
+    required this.setIndexCallback,
+    this.currentIndex = 0,
+  });
 
+  final int currentIndex;
   final Function setIndexCallback;
 
   @override
@@ -11,8 +16,6 @@ class FloatingAppBar extends StatefulWidget {
 }
 
 class _FloatingAppBarState extends State<FloatingAppBar> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +46,7 @@ class _FloatingAppBarState extends State<FloatingAppBar> {
     String label,
     int index,
   ) {
-    bool selected = index == currentIndex;
+    bool selected = index == widget.currentIndex;
     Size preferredSize = selected ? const Size(60, 60) : const Size(45, 50);
     return PreferredSize(
       preferredSize: preferredSize,
@@ -55,7 +58,6 @@ class _FloatingAppBarState extends State<FloatingAppBar> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              currentIndex = index == 2 ? currentIndex : index;
               widget.setIndexCallback(index);
             });
           },

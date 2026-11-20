@@ -23,14 +23,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   late Widget currentPage;
   final BottomBarController controller = BottomBarController();
 
-  final List<Widget> pages = <Widget>[
-    GeneralScreen(),
-    CatalogScreen(),
-    WishlistScreen(),
-    ProfileScreen(),
-  ];
+  late List<Widget> pages;
 
   void onNavPick(int i) {
+    currentIndex = i == 2 ? currentIndex : i;
     switch (i) {
       case 0:
         {
@@ -83,6 +79,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    pages = [];
+    pages.add(GeneralScreen());
+    pages.add(CatalogScreen());
+    pages.add(WishlistScreen());
+    pages.add(
+      ProfileScreen(
+        onWishlist: () {
+          onNavPick(3);
+        },
+      ),
+    );
+
     setState(() {
       currentPage = pages[0];
     });
@@ -111,7 +119,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             hideOnScroll: true,
           ),
           body: currentPage,
-          child: FloatingAppBar(setIndexCallback: onNavPick),
+          child: FloatingAppBar(
+            setIndexCallback: onNavPick,
+            currentIndex: currentIndex,
+          ),
         ),
       ),
     );

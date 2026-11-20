@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/screens/address_screen.dart';
+import 'package:hobby_town_demo/screens/contact_screen.dart';
 
 import '../components/membership_banner.dart';
 import '../components/menu_card.dart';
@@ -17,7 +18,6 @@ class ProfileScreen extends StatelessWidget {
     this.onOrders,
     this.onWishlist,
     this.onNotifications,
-    this.onAbout,
   });
 
   final String name;
@@ -27,7 +27,11 @@ class ProfileScreen extends StatelessWidget {
   final VoidCallback? onOrders;
   final VoidCallback? onWishlist;
   final VoidCallback? onNotifications;
-  final VoidCallback? onAbout;
+
+  void onAbout(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ContactScreen()));
+  }
 
   void onAddress(BuildContext context) {
     Navigator.of(context)
@@ -73,7 +77,7 @@ class ProfileScreen extends StatelessWidget {
                 MenuItemData(
                   icon: Icons.favorite_border_rounded,
                   title: 'Wishlist',
-                  subtitle: '4 produk favorit',
+                  subtitle: 'Lihat produk yang ingin dibeli',
                   onTap: onWishlist,
                 ),
                 MenuItemData(
@@ -91,7 +95,9 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.info_outline_rounded,
                   title: 'Tentang MyHobbyTown',
                   subtitle: 'Teman hobi kamu · Sejak 2003',
-                  onTap: onAbout,
+                  onTap: () {
+                    onAbout(context);
+                  },
                 ),
               ],
             ),
