@@ -61,3 +61,6 @@ final cartProvider = StateProvider<List<CartEntry>>((ref) => []);
 final cartSelector = Provider<List<CartEntry>>(
   (ref) => ref.watch(cartProvider),
 );
+
+final orderProvider = StateProvider<List<Order>>((ref) => []);
+final orderSelector = Provider<List<Order>>((ref) => ref.watch(orderProvider));

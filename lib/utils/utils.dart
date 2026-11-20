@@ -17,3 +17,21 @@ String truncateStringDots(String string, int length) {
     return string;
   }
 }
+
+String shortDate(DateTime d) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Agu',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
+  ];
+  return '${d.day} ${months[d.month - 1]} ${d.year}';
+}

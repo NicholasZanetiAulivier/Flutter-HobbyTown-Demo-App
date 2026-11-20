@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hobby_town_demo/models/item.dart';
+import 'package:hobby_town_demo/utils/utils.dart';
 
 class _C {
   static const bg = Color(0xFFF7F7FA);
@@ -25,27 +26,6 @@ String _rupiah(int value) {
   return 'Rp $buf';
 }
 
-String _shortDate(DateTime d) {
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'Mei',
-    'Jun',
-    'Jul',
-    'Agu',
-    'Sep',
-    'Okt',
-    'Nov',
-    'Des',
-  ];
-  return '${d.day} ${months[d.month - 1]} ${d.year}';
-}
-
-// ---------------------------------------------------------------------------
-// Screen
-// ---------------------------------------------------------------------------
 class OrderSuccessScreen extends StatelessWidget {
   final Order order;
 
@@ -311,7 +291,7 @@ class _OrderSummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${order.paymentMethod} · ${_shortDate(order.paidAt)}',
+                '${order.paymentMethod} · ${shortDate(order.paidAt)}',
                 style: const TextStyle(fontSize: 13, color: _C.muted),
               ),
               Text(

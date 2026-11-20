@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/screens/address_screen.dart';
 import 'package:hobby_town_demo/screens/contact_screen.dart';
+import 'package:hobby_town_demo/screens/history_screen.dart';
 
 import '../components/membership_banner.dart';
 import '../components/menu_card.dart';
@@ -15,7 +16,6 @@ class ProfileScreen extends StatelessWidget {
     this.email = 'naya.putri@email.com',
     this.avatar,
     this.onEditProfile,
-    this.onOrders,
     this.onWishlist,
     this.onNotifications,
   });
@@ -24,7 +24,6 @@ class ProfileScreen extends StatelessWidget {
   final String email;
   final ImageProvider? avatar;
   final VoidCallback? onEditProfile;
-  final VoidCallback? onOrders;
   final VoidCallback? onWishlist;
   final VoidCallback? onNotifications;
 
@@ -36,6 +35,11 @@ class ProfileScreen extends StatelessWidget {
   void onAddress(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => AddressScreen()));
+  }
+
+  void onOrders(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HistoryScreen()));
   }
 
   @override
@@ -64,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.inventory_2_outlined,
                   title: 'Pesanan Saya',
                   subtitle: '1 pesanan dalam perjalanan',
-                  onTap: onOrders,
+                  onTap: () => onOrders(context),
                 ),
                 MenuItemData(
                   icon: Icons.location_on_outlined,
@@ -80,12 +84,12 @@ class ProfileScreen extends StatelessWidget {
                   subtitle: 'Lihat produk yang ingin dibeli',
                   onTap: onWishlist,
                 ),
-                MenuItemData(
-                  icon: Icons.notifications_none_rounded,
-                  title: 'Notifikasi',
-                  subtitle: 'Kabar pesanan dan promo',
-                  onTap: onNotifications,
-                ),
+                // MenuItemData(
+                //   icon: Icons.notifications_none_rounded,
+                //   title: 'Notifikasi',
+                //   subtitle: 'Kabar pesanan dan promo',
+                //   onTap: onNotifications,
+                // ),
               ],
             ),
             const SizedBox(height: 20),
