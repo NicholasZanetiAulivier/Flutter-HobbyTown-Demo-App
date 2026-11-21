@@ -63,6 +63,7 @@ class Order {
   final String paymentMethod;
   final ShippingOption courier;
   final String trackingNumber;
+  final ShippingAddress address;
 
   final DateTime paidAt;
   final DateTime sentAt;
@@ -78,6 +79,7 @@ class Order {
     required this.trackingNumber,
     required this.sentAt,
     required this.arrivedAt,
+    required this.address,
   });
 
   OrderStatus get status {

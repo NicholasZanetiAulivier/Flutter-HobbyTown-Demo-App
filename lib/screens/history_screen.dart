@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/components/top_app_bar.dart';
 import 'package:hobby_town_demo/models/item.dart';
 import 'package:hobby_town_demo/providers/catalog_provider.dart';
+import 'package:hobby_town_demo/screens/order_details_screen.dart';
 import 'package:hobby_town_demo/screens/order_tracking_screen.dart';
 
 class _C {
@@ -60,7 +61,12 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
   late OrderStatus? _filter = widget.initialFilter;
   late List<Order> orders;
 
-  void onOrderTap(Order o) {}
+  void onOrderTap(Order o) {
+    if (!mounted) return;
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => OrderDetailScreen(order: o)),
+    );
+  }
 
   void onTrackOrder(Order o) {
     if (!mounted) return;
@@ -194,9 +200,6 @@ class _FilterBar extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Order card
-// ---------------------------------------------------------------------------
 class _OrderCard extends StatelessWidget {
   final Order order;
   final VoidCallback? onTap;

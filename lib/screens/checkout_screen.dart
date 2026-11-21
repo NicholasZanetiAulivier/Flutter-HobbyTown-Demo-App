@@ -59,6 +59,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
       trackingNumber: Uuid().v1(),
       sentAt: DateTime.now().add(Duration(seconds: 30)),
       arrivedAt: DateTime.now().add(Duration(minutes: 1, seconds: 30)),
+      address: _address!,
     );
     ref.read(cartProvider.notifier).state = [];
     ref.read(orderProvider.notifier).state.add(newOrder);
