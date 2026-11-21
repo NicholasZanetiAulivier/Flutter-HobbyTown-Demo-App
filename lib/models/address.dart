@@ -5,8 +5,8 @@ class ShippingAddress {
   final String phoneNo;
   final String address;
   final String postCode;
-  final double lat;
-  final double lng;
+  double? lat;
+  double? lng;
 
   new({
     required this.id,
@@ -15,9 +15,11 @@ class ShippingAddress {
     required this.phoneNo,
     required this.address,
     required this.postCode,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
   });
+
+  String get fullName => "${firstName} ${lastName}";
 
   factory fromRow(Map<String, Object?> map) {
     return ShippingAddress(
