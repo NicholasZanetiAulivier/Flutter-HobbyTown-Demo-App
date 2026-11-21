@@ -31,17 +31,22 @@ class CartScreenStateImpl extends ConsumerState<CartScreenImpl> {
 
   void onSelectAllChanged(bool b) {}
 
-  void onQuantityChanged(CartEntry entry, int quantity) {}
+  void onQuantityChanged(CartEntry entry, int quantity) {
+    entry.quantity = quantity;
+    setState(() {});
+  }
 
   void onRemoveItem(CartEntry c) {}
 
   void onApplyVoucher(String s) {}
 
-  void onCheckout(List<CartEntry> carts) {
+  Future<void> onCheckout(List<CartEntry> carts) async {
     if (!mounted) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => CheckoutScreenImpl(items: carts)),
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => CheckoutScreen(items: carts)),
     );
+    if (!mounted) return;
+    setState(() {});
   }
 
   final TextEditingController _voucherController = TextEditingController();
@@ -182,7 +187,7 @@ class CartScreenStateImpl extends ConsumerState<CartScreenImpl> {
       child: Dismissible(
         key: ValueKey('${entry.item.id}-${entry.size}-${entry.variant}'),
         direction: DismissDirection.endToStart,
-        onDismissed: (_) => onRemoveItem?.call(entry),
+        onDismissed: (_) => onRemoveItem.call(entry),
         background: const SizedBox.shrink(),
         secondaryBackground: Container(
           alignment: Alignment.centerRight,

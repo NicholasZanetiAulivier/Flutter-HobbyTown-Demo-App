@@ -113,6 +113,7 @@ class _AddressPageState extends ConsumerState<AddressPage> {
 
     setState(() {
       _addresses = _addresses.where((a) => a.id != address.id).toList();
+      ref.read(addressProvider.notifier).state = _addresses;
     });
     _notify();
     _toast('Alamat dihapus');

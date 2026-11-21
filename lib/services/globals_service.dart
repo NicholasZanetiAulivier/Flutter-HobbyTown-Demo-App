@@ -19,6 +19,11 @@ class GlobalsService {
     ),
   ];
 
+  static List<ShippingOption> shippingOptions = [
+    ShippingOption(id: "1", name: "JNE", eta: "10 menit", price: 12000),
+    ShippingOption(id: "2", name: "Gojek", eta: "10 menit", price: 25000),
+    ShippingOption(id: "3", name: "Grab", eta: "10 menit", price: 40000),
+  ];
   static List<ShippingAddress> addresses = [];
   static List<Item> items = [];
 }

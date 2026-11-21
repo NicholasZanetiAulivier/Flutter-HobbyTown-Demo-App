@@ -4,6 +4,9 @@ import 'package:hobby_town_demo/components/top_app_bar.dart';
 import 'package:hobby_town_demo/models/address.dart';
 import 'package:hobby_town_demo/models/item.dart';
 import 'package:hobby_town_demo/providers/address_provider.dart';
+import 'package:hobby_town_demo/providers/catalog_provider.dart';
+import 'package:hobby_town_demo/services/globals_service.dart';
+import 'package:uuid/uuid.dart';
 
 // ---------------------------------------------------------------------------
 // Design tokens
@@ -45,7 +48,24 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
   late List<ShippingAddress> _addresses;
   late List<ShippingOption> shippingOptions;
 
-  void onPlaceOrder() {}
+  void onPlaceOrder() {
+    Order newOrder = Order(
+      itemList: widget.items,
+      total: getTotal(),
+      orderNo: Uuid().v4(),
+      paidAt: DateTime.now(),
+      paymentMethod: "placeholder",
+      courier: _shipping,
+      trackingNumber: Uuid().v1(),
+      sentAt: DateTime.now().add(Duration(seconds: 30)),
+      arrivedAt: DateTime.now().add(Duration(minutes: 1, seconds: 30)),
+    );
+    ref.read(cartProvider.notifier).state = [];
+    ref.read(orderProvider.notifier).state.add(newOrder);
+    Navigator.of(context)
+      ..pop()
+      ..pop();
+  }
 
   int getTotal() {
     int total = 0;
@@ -60,12 +80,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
   void initState() {
     super.initState();
     _addresses = ref.watch(addressProvider);
-    shippingOptions = [
-      ShippingOption(id: "1", name: "JNE", eta: "10 menit", price: 12000),
-      ShippingOption(id: "2", name: "Gojek", eta: "10 menit", price: 25000),
-      ShippingOption(id: "3", name: "Grab", eta: "10 menit", price: 40000),
-    ];
-
+    shippingOptions = GlobalsService.shippingOptions;
     _address = _addresses.firstOrNull;
     _shipping = shippingOptions.first;
   }
@@ -111,7 +126,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
               ],
             ),
           ),
-          _BottomBar(total: getTotal(), onPressed: () => onPlaceOrder()),
+          _BottomBar(
+            total: getTotal(),
+            onPressed: () => onPlaceOrder(),
+            disabled: _address == null,
+          ),
         ],
       ),
     );
@@ -204,7 +223,9 @@ class _AddressCard extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            "Belum ada alamat",
+                            address == null
+                                ? "Belum ada alamat"
+                                : address!.address,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 15,
@@ -270,9 +291,6 @@ class _LabelChip extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Order card
-// ---------------------------------------------------------------------------
 class _OrderCard extends StatelessWidget {
   final CartEntry item;
   final int quantity;
@@ -562,8 +580,13 @@ class _RadioDot extends StatelessWidget {
 class _BottomBar extends StatelessWidget {
   final int total;
   final VoidCallback onPressed;
+  final bool disabled;
 
-  const _BottomBar({required this.total, required this.onPressed});
+  const _BottomBar({
+    required this.total,
+    required this.onPressed,
+    required this.disabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -577,9 +600,9 @@ class _BottomBar extends StatelessWidget {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: onPressed,
+              onPressed: disabled ? () {} : onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _C.ink,
+                backgroundColor: disabled ? Colors.grey : _C.ink,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
@@ -601,9 +624,6 @@ class _BottomBar extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Address selection modal
-// ---------------------------------------------------------------------------
 Future<ShippingAddress?> showAddressSelectionSheet(
   BuildContext context, {
   required List<ShippingAddress> addresses,
@@ -641,23 +661,6 @@ class _AddressSelectionSheet extends StatefulWidget {
 class _AddressSelectionSheetState extends State<_AddressSelectionSheet> {
   late List<ShippingAddress> _addresses = List.of(widget.addresses);
   late String _selectedId = widget.selectedId;
-
-  Future<void> _addAddress() async {
-    final created = await showModalBottomSheet<ShippingAddress>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const _NewAddressSheet(),
-    );
-    if (created != null && mounted) {
-      widget.onAddressAdded?.call(created);
-      setState(() {
-        _addresses.add(created);
-        _selectedId = created.id;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -698,12 +701,9 @@ class _AddressSelectionSheetState extends State<_AddressSelectionSheet> {
               child: ListView.separated(
                 shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
-                itemCount: _addresses.length + 1,
+                itemCount: _addresses.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, i) {
-                  if (i == _addresses.length) {
-                    return _AddAddressButton(onTap: _addAddress);
-                  }
                   final a = _addresses[i];
                   return _SelectableTile(
                     selected: a.id == _selectedId,
@@ -785,42 +785,6 @@ class _AddressSelectionSheetState extends State<_AddressSelectionSheet> {
                     ),
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AddAddressButton extends StatelessWidget {
-  final VoidCallback onTap;
-
-  const _AddAddressButton({required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: onTap,
-      child: Container(
-        height: 52,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: _C.accent),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add, color: _C.accent, size: 20),
-            SizedBox(width: 8),
-            Text(
-              'Tambah Alamat Baru',
-              style: TextStyle(
-                color: _C.accent,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
               ),
             ),
           ],
