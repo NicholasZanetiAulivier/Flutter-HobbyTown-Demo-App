@@ -77,8 +77,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> with _AuthRunner {
   Future<void> onAuthenticated() async {
     await sharedPreferences.setBool("isAuth", true);
     await sharedPreferences.setString("username", _email.text.split("@")[0]);
+    await sharedPreferences.setString("email", _email.text);
     ref.read(isAuthProvider.notifier).state = true;
     ref.read(usernameProvider.notifier).state = _email.text.split("@")[0];
+    ref.read(emailProvider.notifier).state = _email.text;
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => HomeScreen()),

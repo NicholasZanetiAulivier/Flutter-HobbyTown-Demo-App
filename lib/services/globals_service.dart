@@ -5,6 +5,7 @@ import 'package:hobby_town_demo/models/news.dart';
 class GlobalsService {
   static bool isAuth = false;
   static String username = "";
+  static String email = "";
   static List<News> articles = [
     News(
       id: "1",

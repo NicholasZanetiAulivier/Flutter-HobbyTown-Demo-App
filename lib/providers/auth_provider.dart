@@ -11,3 +11,7 @@ final isAuthSelector = Provider<bool>((ref) {
 final usernameProvider = StateProvider<String>((_) => GlobalsService.username);
 
 final usernameSelector = Provider<String>((ref) => ref.watch(usernameProvider));
+
+final emailProvider = StateProvider<String>((_) => GlobalsService.email);
+
+final emailSelector = Provider<String>((ref) => ref.watch(emailProvider));

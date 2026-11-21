@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
+import 'package:hobby_town_demo/providers/auth_provider.dart';
 import 'package:hobby_town_demo/screens/address_screen.dart';
 import 'package:hobby_town_demo/screens/contact_screen.dart';
 import 'package:hobby_town_demo/screens/history_screen.dart';
@@ -9,19 +11,15 @@ import '../components/menu_card.dart';
 import '../components/profile_header.dart';
 import '../models/menu_item_data.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({
     super.key,
-    this.name = 'Naya Putri',
-    this.email = 'naya.putri@email.com',
     this.avatar,
     this.onEditProfile,
     this.onWishlist,
     this.onNotifications,
   });
 
-  final String name;
-  final String email;
   final ImageProvider? avatar;
   final VoidCallback? onEditProfile;
   final VoidCallback? onWishlist;
@@ -43,7 +41,9 @@ class ProfileScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String name = ref.watch(usernameProvider);
+    String email = ref.watch(emailProvider);
     return ColoredBox(
       color: BG,
       child: SingleChildScrollView(

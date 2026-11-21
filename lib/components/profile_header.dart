@@ -50,21 +50,21 @@ class ProfileHeader extends StatelessWidget {
                 style: const TextStyle(fontSize: 13, color: MUTED),
               ),
               const SizedBox(height: 4),
-              GestureDetector(
-                onTap: onEditProfile,
-                behavior: HitTestBehavior.opaque,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2),
-                  child: Text(
-                    'Edit Profil',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: PINK,
-                    ),
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: onEditProfile,
+              //   behavior: HitTestBehavior.opaque,
+              //   child: const Padding(
+              //     padding: EdgeInsets.symmetric(vertical: 2),
+              //     child: Text(
+              //       'Edit Profil',
+              //       style: TextStyle(
+              //         fontSize: 12,
+              //         fontWeight: FontWeight.w600,
+              //         color: PINK,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

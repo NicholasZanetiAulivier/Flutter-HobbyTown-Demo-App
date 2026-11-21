@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hobby_town_demo/providers/catalog_provider.dart';
 import 'package:hobby_town_demo/utils/utils.dart';
 
 import '../models/item.dart';
 
-class ProductDetailScreen extends StatefulWidget {
+class ProductDetailScreen extends ConsumerStatefulWidget {
   final Item item;
 
   const ProductDetailScreen({super.key, required this.item});
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  ConsumerState<ProductDetailScreen> createState() =>
+      _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   // ---- Design tokens ------------------------------------------------------
   static const Color _pink = Color(0xFFFF4D8D);
   static const Color _pinkSoft = Color(0xFFFFE1EC);
@@ -36,10 +39,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   int _selectedSizeIndex = 2; // "L"
-  bool _isFavorite = false;
+  late bool _isFavorite;
 
   /// The model has a single image; extend this list when more are available.
-  List<String> get _images => [widget.item.imageUrl];
+  List<String> get _images => [widget.item.imageUrl, ...widget.item.moreImages];
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = ref.read(wishProvider.notifier).state.contains(widget.item);
+  }
 
   @override
   void dispose() {
@@ -57,7 +66,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   void _onFavoritePressed() {
-    setState(() => _isFavorite = !_isFavorite);
+    setState(() {
+      _isFavorite = !_isFavorite;
+      Set<Item> items = ref.read(wishProvider.notifier).state;
+      if (_isFavorite) {
+        if (!items.contains(widget.item)) items.add(widget.item);
+      } else {
+        items.remove(widget.item);
+      }
+    });
   }
 
   void _onPageChanged(int index) {
@@ -82,9 +99,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   void _onAddToCartPressed() {
+    List<CartEntry> cart = ref.read(cartProvider.notifier).state;
+    if (cart.where((element) => element.item == widget.item).length <= 0) {
+      cart.add(
+        CartEntry(
+          item: widget.item,
+          size: switch (_selectedSizeIndex) {
+            0 => 'S',
+            1 => 'M',
+            2 => 'L',
+            3 => 'XL',
+            4 => 'XXL',
+            int() => 'S',
+          },
+          variant: "Ukuran",
+        ),
+      );
+    } else {
+      cart.where((element) => element.item == widget.item).first.quantity += 1;
+    }
     _showMessage(
       '${widget.item.name} (${_sizes[_selectedSizeIndex]}) ditambahkan ke keranjang',
     );
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 
   void _showMessage(String message) {

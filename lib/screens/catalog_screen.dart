@@ -153,11 +153,14 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
     wishList = ref.watch(wishSelector).map((e) => e.id).toSet();
   }
 
-  void onItemTap(Item item) {
+  Future<void> onItemTap(Item item) async {
     if (!mounted) return;
-    Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => ProductDetailScreen(item: item)),
     );
+    setState(() {
+      wishList = ref.watch(wishSelector).map((e) => e.id).toSet();
+    });
   }
 
   @override
@@ -351,7 +354,7 @@ class _CatalogScreenState extends ConsumerState<CatalogScreen> {
       items: items,
       favorites: wishList,
       bottomPadding: bottomPadding,
-      onTap: (item) => onItemTap(item),
+      onTap: (item) async => onItemTap(item),
       onToggleFavorite: _toggleFavorite,
       onAddToCart: (item) => onAddToCart.call(item),
     );

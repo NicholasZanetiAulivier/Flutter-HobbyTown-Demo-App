@@ -138,9 +138,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreenImpl> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Shared card shell
-// ---------------------------------------------------------------------------
 class _Card extends StatelessWidget {
   final Widget child;
 
@@ -187,13 +184,16 @@ class _AddressCard extends StatelessWidget {
             children: [
               Text('Alamat Pengiriman', style: _titleStyle),
               GestureDetector(
-                onTap: onChange,
+                onTap: address == null ? () {} : onChange,
                 behavior: HitTestBehavior.opaque,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 2,
+                  ),
                   child: Text(
-                    'Ubah',
-                    style: TextStyle(
+                    address == null ? "" : 'Ubah',
+                    style: const TextStyle(
                       color: _C.accent,
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -1049,7 +1049,10 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(
         leading: null,
         automaticallyImplyLeading: false,
-        title: TopAppBarContent(titleText: "Cart", shouldShowBackButton: true),
+        title: TopAppBarContent(
+          titleText: "Checkout",
+          shouldShowBackButton: true,
+        ),
       ),
       body: CheckoutScreenImpl(items: items),
     );

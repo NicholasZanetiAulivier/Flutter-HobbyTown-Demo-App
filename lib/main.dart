@@ -13,6 +13,7 @@ void main() async {
   SharedPreferencesAsync sharedPreferences = SharedPreferencesAsync();
   GlobalsService.isAuth = await sharedPreferences.getBool("isAuth") ?? false;
   GlobalsService.username = await sharedPreferences.getString("username") ?? "";
+  GlobalsService.email = await sharedPreferences.getString("email") ?? "";
   GlobalsService.addresses = await DbService.getAddresses() ?? [];
   GlobalsService.items = await ApiService.getItemsAll();
 
@@ -26,6 +27,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(isAuthProvider.notifier).state = GlobalsService.isAuth;
     ref.read(usernameProvider.notifier).state = GlobalsService.username;
+    ref.read(emailProvider.notifier).state = GlobalsService.email;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
