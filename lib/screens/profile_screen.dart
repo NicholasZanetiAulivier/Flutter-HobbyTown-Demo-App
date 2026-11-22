@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/providers/auth_provider.dart';
+import 'package:hobby_town_demo/providers/catalog_provider.dart';
 import 'package:hobby_town_demo/screens/address_screen.dart';
 import 'package:hobby_town_demo/screens/contact_screen.dart';
 import 'package:hobby_town_demo/screens/history_screen.dart';
@@ -69,7 +70,8 @@ class ProfileScreen extends ConsumerWidget {
                 MenuItemData(
                   icon: Icons.inventory_2_outlined,
                   title: 'Pesanan Saya',
-                  subtitle: '1 pesanan dalam perjalanan',
+                  subtitle:
+                      '${ref.watch(orderSelector).where((element) => element.arrivedAt.isAfter(DateTime.now())).length} pesanan dalam perjalanan',
                   onTap: () => onOrders(context),
                   show: isAuth,
                 ),

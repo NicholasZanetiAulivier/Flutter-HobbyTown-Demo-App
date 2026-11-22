@@ -4,6 +4,7 @@ import 'package:hobby_town_demo/components/filter_chip.dart';
 import 'package:hobby_town_demo/components/product_card.dart';
 import 'package:hobby_town_demo/constants/colors.dart';
 import 'package:hobby_town_demo/providers/catalog_provider.dart';
+import 'package:hobby_town_demo/screens/product_details_screen.dart';
 
 import '../models/item.dart';
 
@@ -13,20 +14,12 @@ class WishlistScreen extends ConsumerStatefulWidget {
     this.filter = WishlistFilter.all,
     this.brandLogo,
     this.onFilterChanged,
-    this.onEdit,
-    this.onItemTap,
-    this.onRemoveFavorite,
-    this.onAddToCart,
     this.onStartShopping,
   });
 
   final WishlistFilter filter;
   final ImageProvider? brandLogo;
   final ValueChanged<WishlistFilter>? onFilterChanged;
-  final VoidCallback? onEdit;
-  final ValueChanged<Item>? onItemTap;
-  final ValueChanged<Item>? onRemoveFavorite;
-  final ValueChanged<Item>? onAddToCart;
   final VoidCallback? onStartShopping;
 
   @override
@@ -35,6 +28,36 @@ class WishlistScreen extends ConsumerStatefulWidget {
 
 class _WishlistPageState extends ConsumerState<WishlistScreen> {
   late List<Item> items;
+
+  Future<void> onItemTap(Item item) async {
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ProductDetailScreen(item: item)),
+    );
+    setState(() {
+      items = ref.watch(wishSelector).toList();
+    });
+  }
+
+  void onFavoriteChange(Item item, bool isFavorite) {
+    if (isFavorite) {
+      ref.read(wishProvider.notifier).state.add(item);
+    } else {
+      ref
+          .read(wishProvider.notifier)
+          .state
+          .removeWhere((element) => element == item);
+    }
+  }
+
+  void onAddToCart(Item item) {
+    List<CartEntry> cart = ref.read(cartProvider.notifier).state;
+    if (cart.where((element) => element.item == item).length <= 0) {
+      cart.add(CartEntry(item: item, size: 'S', variant: "Ukuran"));
+    } else {
+      cart.where((element) => element.item == item).first.quantity += 1;
+    }
+  }
 
   @override
   void initState() {
@@ -55,7 +78,7 @@ class _WishlistPageState extends ConsumerState<WishlistScreen> {
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 64, 20, 0),
           sliver: SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,26 +119,11 @@ class _WishlistPageState extends ConsumerState<WishlistScreen> {
                 ),
                 const SizedBox(height: 18),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       '${items.length} produk tersimpan',
                       style: const TextStyle(fontSize: 12, color: MUTED),
-                    ),
-                    GestureDetector(
-                      onTap: widget.onEdit,
-                      behavior: HitTestBehavior.opaque,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 4),
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: MUTED,
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -151,9 +159,9 @@ class _WishlistPageState extends ConsumerState<WishlistScreen> {
                 final item = items[index];
                 return ProductCard(
                   item: item,
-                  onTap: () => widget.onItemTap?.call(item),
-                  onRemoveFavorite: () => widget.onRemoveFavorite?.call(item),
-                  onAddToCart: () => widget.onAddToCart?.call(item),
+                  onTap: () async => await onItemTap(item),
+                  onRemoveFavorite: () => onFavoriteChange(item, false),
+                  onAddToCart: () => onAddToCart(item),
                 );
               }, childCount: items.length),
             ),

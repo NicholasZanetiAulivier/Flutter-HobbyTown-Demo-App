@@ -97,7 +97,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     pages = [];
     pages.add(GeneralScreen());
     pages.add(CatalogScreen());
-    pages.add(WishlistScreen());
+    pages.add(
+      WishlistScreen(
+        onStartShopping: () {
+          onNavPick(1);
+        },
+      ),
+    );
     pages.add(
       ProfileScreen(
         onWishlist: () {

@@ -41,10 +41,10 @@ class GeneralScreen extends ConsumerStatefulWidget {
   final List<String>? categories;
 
   @override
-  ConsumerState<GeneralScreen> createState() => _NewsScreenState();
+  ConsumerState<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _NewsScreenState extends ConsumerState<GeneralScreen> {
+class _GeneralScreenState extends ConsumerState<GeneralScreen> {
   String? _category;
 
   late News featured;
@@ -80,7 +80,7 @@ class _NewsScreenState extends ConsumerState<GeneralScreen> {
       child: ListView(
         physics: const BouncingScrollPhysics(),
         // Bottom padding leaves room for the floating navigation bar.
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+        padding: const EdgeInsets.fromLTRB(20, 64, 20, 120),
         children: [
           const Text(
             'Sedikit Jepang, banyak inspirasi.',
