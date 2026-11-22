@@ -1,3 +1,4 @@
+import 'package:hobby_town_demo/models/news.dart';
 import 'package:hobby_town_demo/services/globals_service.dart';
 import 'package:riverpod/legacy.dart';
 import 'package:riverpod/riverpod.dart';
@@ -26,3 +27,7 @@ final cartSelector = Provider<List<CartEntry>>(
 
 final orderProvider = StateProvider<List<Order>>((ref) => []);
 final orderSelector = Provider<List<Order>>((ref) => ref.watch(orderProvider));
+
+final newsProvider = StateProvider<List<News>>((ref) => GlobalsService.news);
+
+final newsSelector = Provider<List<News>>((ref) => ref.watch(newsProvider));

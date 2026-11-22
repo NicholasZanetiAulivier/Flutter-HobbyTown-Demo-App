@@ -16,6 +16,7 @@ void main() async {
   GlobalsService.email = await sharedPreferences.getString("email") ?? "";
   GlobalsService.addresses = await DbService.getAddresses() ?? [];
   GlobalsService.items = await ApiService.getItemsAll();
+  GlobalsService.news = await ApiService.getNewsAll();
 
   runApp(ProviderScope(child: MyApp()));
 }

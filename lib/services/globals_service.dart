@@ -27,4 +27,5 @@ class GlobalsService {
   ];
   static List<ShippingAddress> addresses = [];
   static List<Item> items = [];
+  static List<News> news = [];
 }
