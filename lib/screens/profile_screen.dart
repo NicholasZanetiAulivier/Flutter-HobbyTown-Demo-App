@@ -44,6 +44,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     String name = ref.watch(usernameProvider);
     String email = ref.watch(emailProvider);
+    bool isAuth = ref.watch(isAuthProvider);
     return ColoredBox(
       color: BG,
       child: SingleChildScrollView(
@@ -58,6 +59,7 @@ class ProfileScreen extends ConsumerWidget {
               email: email,
               avatar: avatar,
               onEditProfile: onEditProfile,
+              isAuth: isAuth,
             ),
             const SizedBox(height: 24),
             const MembershipBanner(),
@@ -69,6 +71,7 @@ class ProfileScreen extends ConsumerWidget {
                   title: 'Pesanan Saya',
                   subtitle: '1 pesanan dalam perjalanan',
                   onTap: () => onOrders(context),
+                  show: isAuth,
                 ),
                 MenuItemData(
                   icon: Icons.location_on_outlined,
@@ -77,12 +80,14 @@ class ProfileScreen extends ConsumerWidget {
                   onTap: () {
                     onAddress(context);
                   },
+                  show: isAuth,
                 ),
                 MenuItemData(
                   icon: Icons.favorite_border_rounded,
                   title: 'Wishlist',
                   subtitle: 'Lihat produk yang ingin dibeli',
                   onTap: onWishlist,
+                  show: true,
                 ),
                 // MenuItemData(
                 //   icon: Icons.notifications_none_rounded,
@@ -102,6 +107,7 @@ class ProfileScreen extends ConsumerWidget {
                   onTap: () {
                     onAbout(context);
                   },
+                  show: true,
                 ),
               ],
             ),

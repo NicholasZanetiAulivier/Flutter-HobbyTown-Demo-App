@@ -26,6 +26,7 @@ class TopAppBarContent extends ConsumerWidget {
     SharedPreferencesAsync sharedPreferences = SharedPreferencesAsync();
     await sharedPreferences.remove("isAuth");
     await sharedPreferences.remove("username");
+    await sharedPreferences.remove("email");
     ref.read(isAuthProvider.notifier).state = false;
     ref.read(usernameProvider.notifier).state = "";
     Navigator.of(context).pushAndRemoveUntil(

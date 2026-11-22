@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hobby_town_demo/components/floating_app_bar.dart';
+import 'package:hobby_town_demo/components/login_alert_dialog.dart';
 import 'package:hobby_town_demo/components/top_app_bar.dart';
 import 'package:hobby_town_demo/providers/auth_provider.dart';
 import 'package:hobby_town_demo/screens/cart_screen.dart';
 import 'package:hobby_town_demo/screens/catalog_screen.dart';
 import 'package:hobby_town_demo/screens/general_screen.dart';
+import 'package:hobby_town_demo/screens/login_screen.dart';
 import 'package:hobby_town_demo/screens/profile_screen.dart';
 import 'package:hobby_town_demo/screens/wishlist_screen.dart';
 
@@ -45,8 +47,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           if (!ref.watch(isAuthSelector)) {
             showDialog(
               context: context,
-              builder: (context) =>
-                  AlertDialog(content: Text("You must be logged in to view")),
+              builder: (context) => AlertDialog(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                contentPadding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                content: LoginAlertDialog(
+                  onLogin: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                ),
+              ),
             );
           } else {
             Navigator.of(context)

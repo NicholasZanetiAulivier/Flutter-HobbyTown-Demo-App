@@ -6,11 +6,13 @@ class ProfileHeader extends StatelessWidget {
     required this.name,
     required this.email,
     this.avatar,
+    required this.isAuth,
     this.onEditProfile,
   });
 
   final String name;
   final String email;
+  final bool isAuth;
   final ImageProvider? avatar;
   final VoidCallback? onEditProfile;
 
@@ -32,7 +34,7 @@ class ProfileHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                name,
+                isAuth ? name : "Guest",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -44,7 +46,7 @@ class ProfileHeader extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                email,
+                isAuth ? email : "Login terlebih dahulu",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 13, color: MUTED),

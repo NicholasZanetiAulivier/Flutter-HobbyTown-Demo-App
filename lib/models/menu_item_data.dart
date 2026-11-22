@@ -5,6 +5,7 @@ class MenuItemData {
     required this.icon,
     required this.title,
     required this.subtitle,
+    required this.show,
     this.onTap,
   });
 
@@ -12,4 +13,5 @@ class MenuItemData {
   final String title;
   final String subtitle;
   final VoidCallback? onTap;
+  final bool show;
 }

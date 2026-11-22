@@ -24,7 +24,12 @@ class MenuCard extends StatelessWidget {
         ],
       ),
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(children: [for (final item in items) MenuTile(data: item)]),
+      child: Column(
+        children: [
+          for (final item in items)
+            item.show ? MenuTile(data: item) : SizedBox.shrink(),
+        ],
+      ),
     );
   }
 }
